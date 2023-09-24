@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { createSession } from "../../services/api";
 import "./style.css"
+import { AuthContext } from "../../contexts/auth";
 
 const LoginPage = () => {
-
+     
+    const {authenticated, user, login} = useContext(AuthContext)
     const [email, setEmail] =  useState("")
     const [password, setPassword] =  useState("")
 
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         console.log("Email:", email)
         console.log("Senha:", password)
+
+        const response = await createSession(email, password)
+        console.log("login:", response.data)
+        login(email, password)
 
     }
 
     return <div id="login">
         <h2 className="title">Login</h2>
+        <p> Authethicated: {JSON.stringify(authenticated)}</p>
+        <p> User: {JSON.stringify(user)}</p>
         <div className="form">
             <div className="field">
                 <label htmlFor="email">Email:</label>

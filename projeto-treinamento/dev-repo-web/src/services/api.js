@@ -4,15 +4,16 @@ export const api = axios.create({
     baseURL: "http://localhost:5000",
 })
 
+export const createSession = async (email, password) => {
+    return api.post("/sessions", { email, password})
+}
+
 export const getRepositories =  (userId, query) => {
     let url = `/users/${userId}/repositories/`
 
     if (query !== "") {
         url+=`?q=${query}`
     }
-
-    console.log(url)
-
     return api.get(url)
 }
 
