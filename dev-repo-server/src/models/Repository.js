@@ -10,7 +10,7 @@ const repositorySchema = new mongoose.Schema(
         url:{
             type: String,
             required: true,
-            unique: true
+            unique: false
         },
         userId: {
             type: String,

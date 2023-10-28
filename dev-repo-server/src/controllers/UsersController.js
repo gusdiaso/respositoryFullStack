@@ -38,6 +38,7 @@ class UsersController {
 
             const newUser = await User.create({ email, password: encryptedPassword })
             return res.status(201).json(newUser)
+            
         }catch(err){
             console.error(err)
             return res.status(500).json({ error: "Internal server error."})
