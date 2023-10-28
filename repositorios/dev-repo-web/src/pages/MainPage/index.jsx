@@ -1,36 +1,37 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext, useCallback } from "react";
 import "./style.css"
 import Nav from "./Nav"
 import Search from "./Search"
 import Repositories from "./Repositories";
 import { getRepositories, createRepository, destroyRepository } from "../../services/api";
 import { Link } from "react-router-dom";
-
-const userID = "6510ad9dc83d994e49d40f37"
+import { AuthContext } from "../../contexts/auth";
 
 const MainPage = () => {
+   const { user, logout } = useContext(AuthContext)
    const [repositories, setRepositories] = useState([])
    const [loading, setLoading] = useState(true)
    const[loadingError, setLoadingError] = useState(false)
 
-   const loadData = async(query = "") => {
+   const loadData = useCallback(async (query = "") => {
       try {
          setLoading(true)
-         const response = await getRepositories(userID, query)
+         const response = await getRepositories(user?.id, query)
          setRepositories(response.data)
          setLoading(false)
       } catch (err) {
          console.error(err)
          setLoadingError(true)
       }
-   }
-
+   }, [user]);
+   
    useEffect(() => {
-      (async () => await loadData())()
-   }, [])
+      loadData()
+   }, [loadData]);
 
    const handleLogout = () => {
       console.log("Logout")
+      logout()
    }
 
    const handleSearch = (query) => {
@@ -40,14 +41,14 @@ const MainPage = () => {
 
    const handleDeleteRepo = async (repository) => {
       console.log("Remove Repo: ", repository)
-      await destroyRepository(userID, repository._id)
+      await destroyRepository(user?.id, repository._id)
       await loadData()
    }
 
    const handleAddRepo = async (url) => {
       console.log("Add Repo: ", url)
       try {
-         await createRepository(userID, url)
+         await createRepository(user?.id, url)
          await loadData()
       } catch (err) {
          console.error(err)

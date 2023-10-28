@@ -3,13 +3,16 @@ import auth from "./middlewares/auth"
 import UsersController from "./controllers/UsersController";
 import RepositoriesControllers from "./controllers/RepositoriesControllers";
 import SessionsController from "./controllers/SessionsController";
+import TarefaController from "./controllers/TarefaController"
+
 
 
 const routes = new Router()
 
+// routes.get("/teste", TarefaController.mostrarPalavra)
 routes.post("/sessions", SessionsController.create)
 
-// routes.use(auth)
+routes.use(auth)
 
 routes.get("/users", UsersController.index)
 routes.get("/users/:id", UsersController.show)

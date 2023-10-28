@@ -5,7 +5,7 @@ import { AuthContext } from "../../contexts/auth";
 
 const LoginPage = () => {
      
-    const {authenticated, user, login} = useContext(AuthContext)
+    const {login} = useContext(AuthContext)
     const [email, setEmail] =  useState("")
     const [password, setPassword] =  useState("")
 
@@ -13,7 +13,7 @@ const LoginPage = () => {
     const handleLogin = async () => {
         console.log("Email:", email)
         console.log("Senha:", password)
-
+        
         const response = await createSession(email, password)
         console.log("login:", response.data)
         login(email, password)
@@ -22,8 +22,6 @@ const LoginPage = () => {
 
     return <div id="login">
         <h2 className="title">Login</h2>
-        <p> Authethicated: {JSON.stringify(authenticated)}</p>
-        <p> User: {JSON.stringify(user)}</p>
         <div className="form">
             <div className="field">
                 <label htmlFor="email">Email:</label>
